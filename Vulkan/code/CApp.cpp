@@ -99,7 +99,7 @@ void App::run()
 	// GameLoop
 	while (!m_window.shouldClose())
 	{
-		int currentGameObjectsSize = m_gameObjects.size();
+		size_t currentGameObjectsSize = m_gameObjects.size();
 
 		glfwPollEvents();
 
@@ -117,7 +117,7 @@ void App::run()
 
 		if (VkCommandBuffer commandBuffer = m_renderer.beginFrame() ) // Returns nullptr if not completed
 		{
-			int frameIndex = m_renderer.getFrameIndex();
+			size_t frameIndex = m_renderer.getFrameIndex();
 			
 			FrameInfo frameInfo{ frameIndex, frameTime, commandBuffer, camera, descriptorSets[frameIndex] };
 

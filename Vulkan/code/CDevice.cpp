@@ -80,14 +80,15 @@ void Device::createInstance()
 		createInfo.enabledExtensionCount = static_cast<uint32_t>(extensions.size());
 		createInfo.ppEnabledExtensionNames = extensions.data();
 
+	VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo{};
+
 	if (enableValidationLayers)
 	{
-		VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo{};
 		populateDebugMessengerCreateInfo(debugCreateInfo);
 
 		createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
 		createInfo.ppEnabledLayerNames = validationLayers.data();
-		createInfo.pNext = (VkDebugUtilsMessengerCreateInfoEXT*)&debugCreateInfo;
+		createInfo.pNext = (VkDebugUtilsMessengerCreateInfoEXT*) &debugCreateInfo;
 	}
 	else
 	{
@@ -253,7 +254,8 @@ void Device::populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT
 } //populateDebugMessengerCreateInfo()
 
 void Device::setupDebugMessenger() {
-	if (!enableValidationLayers) return;
+	if (!enableValidationLayers) 
+		return;
 
 	VkDebugUtilsMessengerCreateInfoEXT createInfo;
 	populateDebugMessengerCreateInfo(createInfo);

@@ -6,7 +6,7 @@
 
 struct FrameInfo
 {
-	int frameIndex;
+	size_t frameIndex;
 	float frameTime;
 	VkCommandBuffer commandBuffer;
 	Camera& camera;
