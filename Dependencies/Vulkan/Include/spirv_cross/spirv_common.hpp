@@ -24,7 +24,11 @@
 #ifndef SPIRV_CROSS_COMMON_HPP
 #define SPIRV_CROSS_COMMON_HPP
 
+#ifndef SPV_ENABLE_UTILITY_CODE
+#define SPV_ENABLE_UTILITY_CODE
+#endif
 #include "spirv.hpp"
+
 #include "spirv_cross_containers.hpp"
 #include "spirv_cross_error_handling.hpp"
 #include <functional>
@@ -638,7 +642,8 @@ struct SPIRExtension : IVariant
 		SPV_AMD_shader_ballot,
 		SPV_AMD_shader_explicit_vertex_parameter,
 		SPV_AMD_shader_trinary_minmax,
-		SPV_AMD_gcn_shader
+		SPV_AMD_gcn_shader,
+		NonSemanticDebugPrintf
 	};
 
 	explicit SPIRExtension(Extension ext_)
@@ -1563,6 +1568,7 @@ struct AccessChainMeta
 	bool storage_is_packed = false;
 	bool storage_is_invariant = false;
 	bool flattened_struct = false;
+	bool relaxed_precision = false;
 };
 
 enum ExtendedDecorations
@@ -1629,6 +1635,12 @@ enum ExtendedDecorations
 	// must be applied to the result, since pull-model interpolants in MSL cannot be swizzled directly, but the
 	// results of interpolation can.
 	SPIRVCrossDecorationInterpolantComponentExpr,
+
+	// Apply to any struct type that is used in the Workgroup storage class.
+	// This causes matrices in MSL prior to Metal 3.0 to be emitted using a special
+	// class that is convertible to the standard matrix type, to work around the
+	// lack of constructors in the 'threadgroup' address space.
+	SPIRVCrossDecorationWorkgroupStruct,
 
 	SPIRVCrossDecorationCount
 };
